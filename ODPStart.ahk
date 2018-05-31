@@ -1,13 +1,21 @@
 Loop
 {
+
+	WinGet, popuparray, list, ahk_class #32770
+	Loop, %popuparray%
+	{
+		popup := popuparray%A_Index%
+		WinClose, ahk_id %popup%
+	}
 	WinGet, AllWin, List, EMR Document Generator
 	Loop, %AllWin%
 		{
 		WinCode := AllWin%A_Index%
-
-		ControlClick, WindowsForms10.Window.8.app.0.2bf8098_r13_ad17, ahk_id %WinCode%,,,, NA x6 y24
+		;Click Start
+		ControlClick, WindowsForms10.Window.8.app.0.141b42a_r15_ad111, ahk_id %WinCode%,,,, NA x6 y24
 		
-		ControlGetText, GeneratedText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad110, ahk_id %WinCode%
+		;Get Generated Number
+		ControlGetText, GeneratedText, WindowsForms10.STATIC.app.0.141b42a_r15_ad14, ahk_id %WinCode%
 		GeneratedArray := StrSplit(GeneratedText, A_Space)
 		Generated := % GeneratedArray[2]
 
@@ -15,8 +23,10 @@ Loop
 			{
 			if Generated > 250
 				{
-				ControlClick, WindowsForms10.Window.8.app.0.2bf8098_r13_ad17, ahk_id %WinCode%,,,, NA x6 y48
-				ControlGetText, StatusText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad19, ahk_id %WinCode%
+				;click stop
+				ControlClick, WindowsForms10.Window.8.app.0.141b42a_r15_ad111, ahk_id %WinCode%,,,, NA x6 y48
+				;get status
+				ControlGetText, StatusText, WindowsForms10.STATIC.app.0.141b42a_r15_ad13, ahk_id %WinCode%
 				loop
 					{
 					if StatusText = Stopped
@@ -24,23 +34,26 @@ Loop
 						break
 						}
 					Sleep, 1000
-					ControlGetText, StatusText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad19, ahk_id %WinCode%
+					;get status
+					ControlGetText, StatusText, WindowsForms10.STATIC.app.0.141b42a_r15_ad13, ahk_id %WinCode%
 					}
 				WinGet, procpath, ProcessPath, ahk_id %WinCode%
-				WinClose, ahk_id %WinCode%
+				WinKill, ahk_id %WinCode%
 				Sleep, 1000
 				Run, %procpath%
 				}
 			
-			ControlGetText, AvgAllText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad15, ahk_id %WinCode%
+			;get avg time
+			ControlGetText, AvgAllText, WindowsForms10.STATIC.app.0.141b42a_r15_ad112, ahk_id %WinCode%
 
 			AvgArray := StrSplit(AvgAllText, A_Space)
 			Avg := % AvgArray[6]
 			if Avg >= 25
 				{
-				ControlClick, WindowsForms10.Window.8.app.0.2bf8098_r13_ad17, ahk_id %WinCode%,,,, NA x6 y48
-
-				ControlGetText, StatusText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad19, ahk_id %WinCode%
+				;click stop
+				ControlClick, WindowsForms10.Window.8.app.0.141b42a_r15_ad111, ahk_id %WinCode%,,,, NA x6 y48
+				;get status
+				ControlGetText, StatusText, WindowsForms10.STATIC.app.0.141b42a_r15_ad13, ahk_id %WinCode%
 
 				loop
 					{
@@ -49,10 +62,10 @@ Loop
 						break
 						}
 					Sleep, 1000
-					ControlGetText, StatusText, WindowsForms10.STATIC.app.0.2bf8098_r13_ad19, ahk_id %WinCode%
+					ControlGetText, StatusText, WindowsForms10.STATIC.app.0.141b42a_r15_ad13, ahk_id %WinCode%
 					}
 				WinGet, procpath, ProcessPath, ahk_id %WinCode%
-				WinClose, ahk_id %WinCode%
+				WinKill, ahk_id %WinCode%
 				Sleep, 1000
 				Run, %procpath%
 				}
